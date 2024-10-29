@@ -19,6 +19,10 @@ public class Main {
        
     }
 
+
+
+
+    
     // Se encarga de leer el CSV y almacenar las filas en ArrayList de Arrays de
     // Strings
     private static ArrayList<String[]> leerCsv(String urlCSV) {
