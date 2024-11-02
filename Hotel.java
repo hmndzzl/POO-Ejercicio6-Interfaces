@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,28 +30,36 @@ public class Hotel {
     
 
     // Calcular los ingresos totales de una sola habitacion
-    public double ingresosPorHabitacion(Class<? extends Habitacion> tipo) {
+    public double ingresosPorHabitacion(int tipoHabitacion) {
         double total = 0;
         for (Reserva reserva : reservas) {
-            if (reserva.obtenerTipoHabitacion().equals(tipo.getSimpleName())) {
+            if (reserva.obtenerTipoHabitacion() == tipoHabitacion) { // Compara con el número en lugar de nombre
                 total += reserva.calcularCostoTotal();
             }
         }
         return total;
     }
 
+
     // mostrar la habitacion que mas ingresos  genere
     public String habitacionMasRentable() {
-        double ingresosEstandar = ingresosPorHabitacion(HabitacionEstandar.class);
-        double ingresosEjecutiva = ingresosPorHabitacion(HabitacionEjecutiva.class);
-        double ingresosSuite = ingresosPorHabitacion(SuitePresidencial.class);
+        int[] ingresosPorTipo = new int[3]; // Array para almacenar ingresos de cada tipo
         
-        if (ingresosEstandar > ingresosEjecutiva && ingresosEstandar > ingresosSuite) {
-            return "Habitacion Estandar";
-        } else if (ingresosEjecutiva > ingresosEstandar && ingresosEjecutiva > ingresosSuite) {
-            return "Habitacion Ejecutiva";
-        } else {
-            return "Suite Presidencial";
+        for (Reserva reserva : reservas) {
+            int tipo = reserva.obtenerTipoHabitacion() - 1; // ajustar a índices 0, 1 y 2
+            ingresosPorTipo[tipo] += reserva.calcularCostoTotal();
         }
+    
+        int maxTipo = 0;
+        for (int i = 1; i < ingresosPorTipo.length; i++) {
+            if (ingresosPorTipo[i] > ingresosPorTipo[maxTipo]) {
+                maxTipo = i;
+            }
+        }
+    
+        // Asigna nombres de tipos a los índices
+        String[] nombresTipo = {"Estándar", "Ejecutiva", "Suite"};
+        return nombresTipo[maxTipo];
     }
+    
 }

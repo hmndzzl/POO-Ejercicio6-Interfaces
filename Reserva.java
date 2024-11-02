@@ -1,5 +1,5 @@
 public class Reserva {
-    private int tipoHabitacion; // 1 = Estandar, 2 = Ejecutiva, 3 = Suite Presidencial
+    private int tipoHabitacion;
     private int noches;
     private int personas;
 
@@ -9,39 +9,28 @@ public class Reserva {
         this.personas = personas;
     }
 
+    // Calcular el costo total según el tipo de habitación y servicios adicionales
     public double calcularCostoTotal() {
-        Habitacion habitacion;
+        double costoTotal = 0;
+
         switch (tipoHabitacion) {
-            case 1:
-                habitacion = new HabitacionEstandar();
+            case 1: //  Estándar
+                costoTotal = 50 * noches;
                 break;
-            case 2:
-                int diasLavanderia = 1; // Por defecto
-                habitacion = new HabitacionEjecutiva(personas, diasLavanderia);
+            case 2: //  Ejecutiva
+                costoTotal = (100 * noches) + (15 * personas * noches) + (10 * noches);
                 break;
-            case 3:
-                habitacion = new SuitePresidencial();
+            case 3: // Suite 
+                costoTotal = (250 * noches) + (50 * noches) + 30;
                 break;
             default:
-                throw new IllegalArgumentException("Tipo de habitación no válido");
+                System.out.println("Tipo de habitación no válido.");
         }
-        return habitacion.calcularCosto(noches);
+
+        return costoTotal;
     }
 
-    public String obtenerTipoHabitacion() {
-        switch (tipoHabitacion) {
-            case 1: return "Habitación Estándar";
-            case 2: return "Habitación Ejecutiva";
-            case 3: return "Suite Presidencial";
-            default: return "Desconocido";
-        }
-    }
-
-    public int getNoches() {
-        return noches;
-    }
-
-    public int getPersonas() {
-        return personas;
+    public int obtenerTipoHabitacion() {
+        return tipoHabitacion;
     }
 }

@@ -11,6 +11,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Hotel hotel = new Hotel();
         String csv = "reservas.csv"; // URL al archivo CSV
+        boolean menu = true; // Variable para el bucle while
 
         // Leer reservas desde el CSV y agregarlas al hotel
         ArrayList<String[]> reservas_csv = leerCsv(csv);
@@ -25,7 +26,7 @@ public class Main {
         }
 
         // Menú
-        while (true) {
+        while (menu) {
             System.out.println("1. Mostrar reservas activas");
             System.out.println("2. Consultar habitación más rentable");
             System.out.println("3. Agregar nueva reserva");
@@ -48,7 +49,7 @@ public class Main {
                     int nuevoNoches = scanner.nextInt();
                     System.out.print("Ingrese el número de personas: ");
                     int nuevoPersonas = scanner.nextInt();
-                    
+
                     // Crear nueva reserva
                     Reserva nuevaReserva = new Reserva(nuevoTipo, nuevoNoches, nuevoPersonas);
                     double nuevoCostoTotal = nuevaReserva.calcularCostoTotal();
@@ -59,6 +60,7 @@ public class Main {
                     System.out.println("Reserva agregada exitosamente.");
                     break;
                 case 4:
+                    menu = false;
                     System.out.println("Saliendo...");
                     scanner.close();
                     return;
