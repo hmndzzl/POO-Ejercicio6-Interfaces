@@ -1,58 +1,75 @@
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Hotel {
-    private List<Reserva> reservas;
+    private List<Habitacion> habitaciones;
+    private List<Integer> nochesxReserva;
 
     public Hotel() {
-        this.reservas = new ArrayList<>();
+        this.habitaciones = new ArrayList<>();
+        this.nochesxReserva = new ArrayList<>();
     }
 
-    // Registrar nueva reserva
-    public void nuevaReserva(Reserva reserva) {
-        reservas.add(reserva);
+    // Registrar una nueva reserva
+    public void registrarReserva(Habitacion habitacion, int noches) {
+        habitaciones.add(habitacion);
+        nochesxReserva.add(noches);
     }
 
-    // Mostrar todas las reservas activas
+    // Mostrar todas las reservas 
     public String mostrarReservas() {
-        StringBuilder resultado = new StringBuilder(); // se construye la cadena
-        
-        for (Reserva reserva : reservas) {
-            resultado.append("Tipo de habitación: ")
-                     .append(reserva.obtenerTipoHabitacion())
-                     .append(", Costo total: ")
-                     .append(reserva.calcularCostoTotal())
-                     .append("\n"); 
+        StringBuilder resultadoDeReservas = new StringBuilder();
+        for (int i = 0; i < habitaciones.size(); i++) {
+            Habitacion habitacion = habitaciones.get(i);
+            int noches = nochesxReserva.get(i);
+            resultadoDeReservas.append("Habitacion: ").append(habitacion.getClass().getSimpleName()).append(", costo total: ").append(habitacion.calcularCosto(noches)).append("\n");
         }
         
-        return resultado.toString(); // devuleve la cadena 
+        return resultadoDeReservas.toString();
     }
-    
 
-    // Calcular los ingresos totales de una sola habitacion
-    public double ingresosPorHabitacion(Class<? extends Habitacion> tipo) {
+    // Calcular los ingresos segun el tipo de habitacion
+    public double calcularIngresos(Class<? extends Habitacion> tipo) {
         double total = 0;
-        for (Reserva reserva : reservas) {
-            if (reserva.obtenerTipoHabitacion().equals(tipo.getSimpleName())) {
-                total += reserva.calcularCostoTotal();
+        for (int i = 0; i < habitaciones.size(); i++) {
+            Habitacion habitacion = habitaciones.get(i);
+            int noches = nochesxReserva.get(i);
+
+            if (habitacion.getClass().equals(tipo)) {
+                total += habitacion.calcularCosto(noches);
             }
         }
         return total;
     }
 
-    // mostrar la habitacion que mas ingresos  genere
+    // Determinar los ingresos segun la habtacion
     public String habitacionMasRentable() {
-        double ingresosEstandar = ingresosPorHabitacion(HabitacionEstandar.class);
-        double ingresosEjecutiva = ingresosPorHabitacion(HabitacionEjecutiva.class);
-        double ingresosSuite = ingresosPorHabitacion(SuitePresidencial.class);
-        
+        double ingresosEstandar = calcularIngresos(HabitacionEstandar.class);
+        double ingresosEjecutiva = calcularIngresos(HabitacionEjecutiva.class);
+        double ingresosSuite = calcularIngresos(SuitePresidencial.class);
+
         if (ingresosEstandar > ingresosEjecutiva && ingresosEstandar > ingresosSuite) {
-            return "Habitacion Estandar";
-        } else if (ingresosEjecutiva > ingresosEstandar && ingresosEjecutiva > ingresosSuite) {
-            return "Habitacion Ejecutiva";
-        } else {
+            return "Habitación Estándar";
+        } 
+        else if (ingresosEjecutiva > ingresosEstandar && ingresosEjecutiva > ingresosSuite) {
+            return "Habitación Ejecutiva";
+        } 
+        else {
             return "Suite Presidencial";
         }
+    }
+
+    // Obtener el numero de reservas
+    public int getNumeroDeReservas() {
+        return habitaciones.size();
+    }
+
+    // Obtener habitacion y noches de una reserva
+    public Habitacion getHabitacion(int index) {
+        return habitaciones.get(index);
+    }
+
+    public int getNoches(int index) {
+        return nochesxReserva.get(index);
     }
 }
