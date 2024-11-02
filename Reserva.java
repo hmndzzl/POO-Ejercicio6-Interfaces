@@ -16,8 +16,7 @@ public class Reserva {
                 habitacion = new HabitacionEstandar();
                 break;
             case 2:
-                // Se requiere el número de días de lavandería para la habitación ejecutiva
-                int diasLavanderia = 1; // Por defecto, puedes cambiarlo según la lógica deseada
+                int diasLavanderia = 1; // Por defecto
                 habitacion = new HabitacionEjecutiva(personas, diasLavanderia);
                 break;
             case 3:
